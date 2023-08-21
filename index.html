@@ -1,0 +1,660 @@
+<html>
+    <head>
+        <title>Rivals!</title>
+    </head>
+    <body>
+        <style>
+            :root{
+                /*GLOBALS*/
+                    --color-main-background: rgba(255, 255, 255, 1);
+                    --color-player-healthy: rgba(60, 100, 20, 1);
+                    --color-player-hurt: rgb(100, 68, 20);
+                    --color-player-critical: rgb(100, 20, 20);
+                    --color-player-dead: rgb(0, 0, 0);
+                /*WEAPONS*/
+                    /*FIRE*/
+                    --weapon-fire-knight: 0px 0px;
+                    --weapon-fire-trapper: -32px 0px;
+                    --weapon-fire-judge: -64px 0px;
+                    --weapon-fire-assassin: -96px 0px;
+                    --weapon-fire-ranger: -128px 0px;
+                    --weapon-fire-cleric: -160px 0px;
+                    --weapon-fire-reaper: -192px 0px;
+                    --weapon-fire-wizard: -224px 0px;
+                    --weapon-fire-brawler: -256px 0px;
+                    --weapon-fire-vanguard: -288px 0px;
+                    /*ICE*/
+                    --weapon-ice-knight: 0px -32px;
+                    --weapon-ice-trapper: -32px -32px;
+                    --weapon-ice-judge: -64px -32px;
+                    --weapon-ice-assassin: -96px -32px;
+                    --weapon-ice-ranger: -128px -32px;
+                    --weapon-ice-cleric: -160px -32px;
+                    --weapon-ice-reaper: -192px -32px;
+                    --weapon-ice-wizard: -224px -32px;
+                    --weapon-ice-brawler: -256px -32px;
+                    --weapon-ice-vanguard: -288px -32px;
+                    /*NATURE*/
+                    --weapon-nature-knight: 0px -64px;
+                    --weapon-nature-trapper: -32px -64px;
+                    --weapon-nature-judge: -64px -64px;
+                    --weapon-nature-assassin: -96px -64px;
+                    --weapon-nature-ranger: -128px -64px;
+                    --weapon-nature-cleric: -160px -64px;
+                    --weapon-nature-reaper: -192px -64px;
+                    --weapon-nature-wizard: -224px -64px;
+                    --weapon-nature-brawler: -256px -64px;
+                    --weapon-nature-vanguard: -288px -64px;
+                    /*HOLY*/
+                    --weapon-holy-knight: 0px -96px;
+                    --weapon-holy-trapper: -32px -96px;
+                    --weapon-holy-judge: -64px -96px;
+                    --weapon-holy-assassin: -96px -96px;
+                    --weapon-holy-ranger: -128px -96px;
+                    --weapon-holy-cleric: -160px -96px;
+                    --weapon-holy-reaper: -192px -96px;
+                    --weapon-holy-wizard: -224px -96px;
+                    --weapon-holy-brawler: -256px -96px;
+                    --weapon-holy-vanguard: -288px -96px;
+                    /*UNHOLY*/
+                    --weapon-unholy-knight: 0.25px -128px;
+                    --weapon-unholy-trapper: -32px -128px;
+                    --weapon-unholy-judge: -64px -128px;
+                    --weapon-unholy-assassin: -96px -128px;
+                    --weapon-unholy-ranger: -128px -128px;
+                    --weapon-unholy-cleric: -160px -128px;
+                    --weapon-unholy-reaper: -192px -128px;
+                    --weapon-unholy-wizard: -224px -128px;
+                    --weapon-unholy-brawler: -256px -128px;
+                    --weapon-unholy-vanguard: -288px -128px;   
+                /*ABILITIES*/
+                    /*BASE*/
+                    --ability-sword: 0px -32px;
+                    --ability-axe: -32px -32px;
+                    --ability-staff: -64px -32px;
+                    --ability-hammer: -96px -32px;
+                    --ability-bow: -128px -32px;
+                    /*FACTION*/
+                        /*FIRE*/
+                        --ability-fireball: 0px -288px;
+                        --ability-flamethrower: -32px -288px;
+                        /*ICE*/
+                        --ability-hail: -64px -256px;
+                        --ability-freezeray: -96px -256px;
+                        /*NATURE*/
+                        --ability-tornado: -64 -224px;
+                        --ability-vinelash: -128px -224px;
+                        /*HOLY*/
+                        --ability-aura: -64px -160px;
+                        --ability-blessedground: -32px -160px;
+                        /*UNHOLY*/
+                        --ability-siphon: -128px -192px;
+                        --ability-shadowbolt: -96px -192px;
+            }
+            /*BASE*/
+            html{
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+            body{
+                padding: 0%;
+                margin: 0%;
+            }
+            #logo-container{
+                width: 100%;
+                height: 75px;
+                text-align: center;
+                background-color: var(--color-main-background);
+            }
+            #logo{
+                width: 150px;
+                height: 50%;
+            }
+            #play_area{
+                width: 98vw;             
+                height: 50vh;   
+                background-color: var(--color-main-background);
+                color: white;
+                position: relative;
+                left: 1vw;
+            }
+            #player_one{
+                background-color: var(--color-player-healthy);
+                border-radius: 25px;
+                vertical-align: text-top;
+                width: 32vw;
+            }
+            #player_one_name{
+                width: 105%;
+                height: 10px;
+                text-align: center;
+                color: black;
+                font-weight: bold;
+                font: 8px arial, sans;
+                background-color: white;
+                margin-top: 5px;
+                margin-left: -5px;
+                padding-top: 2px;
+                padding-bottom: 3px;
+                border-top-left-radius: 25px;
+                border-top-right-radius: 25px;
+            }
+            #player_one_icon{
+                position: relative;
+                left: calc(50% - 20px);
+                top: 5%;
+                background-image: url('/weapons.png');
+                background-size: 320px 160px;
+                background-position: 500px 500px;
+                background-repeat: no-repeat;
+                border-radius: 8px;
+                border: 1px solid white;
+                width: 32px;
+                height: 32px;
+            }
+            #player_two{
+                vertical-align: text-top;
+                background-color: var(--color-player-healthy);
+                width: 33vw;
+                border-radius: 25px;
+            }
+            #player_two_name{
+                width: 105%;
+                height: 10px;
+                text-align: center;
+                color: black;
+                font-weight: bold;
+                font: 8px arial, sans;
+                background-color: white;
+                margin-top: 5px;
+                margin-left: -5px;
+                padding-top: 2px;
+                padding-bottom: 3px;
+                border-top-left-radius: 25px;
+                border-top-right-radius: 25px;
+            }
+            #player_two_icon{
+                position: relative;
+                left: calc(50% - 20px);
+                top: 5%;
+                background-image: url('/weapons.png');
+                background-size: 320px 160px;
+                background-position: 500px 500px;
+                background-repeat: no-repeat;
+                border-radius: 8px;
+                border: 1px solid white;
+                width: 32px;
+                height: 32px;
+            }
+            #match_data{
+                width: 31vw;
+                vertical-align: text-top;
+                padding-left: 10px;
+                padding-right: 10px;
+                font: 0.5em arial, sans;
+                font-weight: bold;
+                text-align: center;
+                color: black;
+            }
+            #match_data_content{
+                width: 100%; 
+                height: 70%;
+                max-height: 70%;
+                font: 0.75em arial, sans;
+                overflow-y: scroll;
+            }
+            .player_area_numbers{
+                width: 98vw;             
+                background-color: var(--color-main-background);
+                color: white;
+                position: relative;
+                left: 1vw;
+            }
+            .player_numbers{
+                width: 33vw;
+                text-align: center;
+                font: 0.7em arial, sans;
+            }
+            .midpoint{
+                width: 33vw;
+            }
+            #player_one_health{
+                color: green;
+                font-weight: bold;
+                text-align: center;
+                display: inline-block;
+            }
+            #player_one_mana{
+                color: teal;
+                font-weight: bold;
+                text-align: center;
+                display: inline-block;
+            }
+            #player_two_health{
+                color: green;
+                font-weight: bold;
+                text-align: center;
+                display: inline-block;
+            }
+            #player_two_mana{
+                color: teal;
+                font-weight: bold;
+                text-align: center;
+                display: inline-block;
+            }
+            .player_abilities{
+                position: relative;
+                top: 15px;
+                width: 100%;
+                height: 30px;
+                text-align: center;
+            }
+            .player_slot{
+                width: 32px;
+                height: 32px;
+                border: 1px solid white;
+                border-radius: 5px;
+                background-color: rgba(50, 50, 50, 0.5);
+                display: inline-block;
+            }
+            #create_player_menu{
+                width: 60vw;
+                height: 90vh;
+                background-color: rgba(60, 60, 60, 1);
+                color: white;
+                box-shadow: 0px 0px 5px black;
+                text-align: center;
+                font: 1em arial, sans;
+                position: absolute;
+                left: 20vw;
+                top: 2.5vh;
+                padding-top: 10px;
+            }
+        </style>
+        <div id="logo-container">
+            <img src="/rivals.png" alt="Rivals!" id="logo" />
+        </div>
+        <table class="play_area_numbers">
+            <tr>
+                <td class="player_numbers">
+                    <div id="player_one_health"><!--P1HP--></div> HP | <div id="player_one_mana"><!--P1MP--></div> MP
+                </td>
+                <td class="midpoint">
+                    <!--EMPTY-->
+                </td>
+                <td class="player_numbers">
+                    <div id="player_two_health"><!--P2HP--></div> HP | <div id="player_two_mana"><!--P2MP--></div> MP
+                </td>
+            </tr>
+        </table>
+        <table id="play_area">
+            <tr>
+                <td id="player_one">
+                    <div id="player_one_name">PLAYER ONE<!--PLAYER ONE NAME--></div>
+                    <div id="player_one_icon"><!--PLAYER ONE FACTION / CLASS ICON--></div>
+                    <div class="player_abilities">
+                        <div class="player_slot" id="player_one_slot1"><!--PLAYER ONE SLOT ONE--></div>
+                        <div class="player_slot" id="player_one_slot2"><!--PLAYER ONE SLOT TWO--></div>
+                        <div class="player_slot" id="player_one_slot3"><!--PLAYER ONE SLOT THREE--></div>
+                    </div>
+                </td>
+                <td id="match_data">
+                    MATCH DATA <br /><br />
+                    <div id="match_data_content"><!--MATCH DATA CONTENT--></div><br />
+                </td>
+                <td id="player_two">
+                    <div id="player_two_name">PLAYER TWO<!--PLAYER TWO NAME--></div>
+                    <div id="player_two_icon"><!--PLAYER TWO FACTION / CLASS ICON--></div>
+                    <div class="player_abilities">
+                        <div class="player_slot" id="player_two_slot1"><!--PLAYER TWO SLOT ONE--></div>
+                        <div class="player_slot" id="player_two_slot2"><!--PLAYER TWO SLOT TWO--></div>
+                        <div class="player_slot" id="player_two_slot3"><!--PLAYER TWO SLOT THREE--></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div id="create_player_menu">
+            <div style="text-align: center; width: 100%;">
+                CREATE PLAYERS
+            </div>
+            <br />
+            <input type="text" id="create_player_one_name" placeholder="Player 1" />
+            <br />
+            Faction:
+            <select id="create_player_one_faction">
+                <option>Fire</option>
+                <option>Ice</option>
+                <option>Nature</option>
+                <option>Holy</option>
+                <option>Unholy</option>
+            </select>
+            <br />
+            Class:
+            <select id="create_player_one_class">
+                <option>Knight</option>
+                <option>Trapper</option>
+                <option>Judge</option>
+                <option>Assassin</option>
+                <option>Ranger</option>
+                <option>Cleric</option>
+                <option>Reaper</option>
+                <option>Wizard</option>
+                <option>Brawler</option>
+                <option>Vanguard</option>
+            </select>
+            <br /><br />
+            <input type="text" id="create_player_two_name" placeholder="Player 2" />
+            <br />
+            Faction:
+            <select id="create_player_two_faction">
+                <option>Fire</option>
+                <option>Ice</option>
+                <option>Nature</option>
+                <option>Holy</option>
+                <option>Unholy</option>
+            </select>
+            <br />
+            Class:
+            <select id="create_player_two_class">
+                <option>Knight</option>
+                <option>Trapper</option>
+                <option>Judge</option>
+                <option>Assassin</option>
+                <option>Ranger</option>
+                <option>Cleric</option>
+                <option>Reaper</option>
+                <option>Wizard</option>
+                <option>Brawler</option>
+                <option>Vanguard</option>
+            </select>
+            <br /><br />
+            <button onClick="startGame()">START</button>
+        </div>
+    </body>
+
+    <script>
+
+        /*DATA*/
+            // 0 = name, 1 = health, 2 = mana, 3 = attack, 4 = defense, 5 = agility, 6 = luck, 7 = soul
+
+        /*CLASSES*/
+                //KNIGHT
+                const knight = [];
+                    knight["name"] = "Knight";
+                    knight["health"] = 100;
+                    knight["mana"] =  0;
+                    knight["attack"] = 6;
+                    knight["defense"] = 3;
+                    knight["agility"] = 3;
+                    knight["luck"] =  1;
+                    knight["soul"] = 0;
+                //TRAPPER
+                const trapper = [];
+                    trapper["name"] = "Trapper";
+                    trapper["health"] = 80;
+                    trapper["mana"] =  0;
+                    trapper["attack"] = 4;
+                    trapper["defense"] = 5;
+                    trapper["agility"] = 4;
+                    trapper["luck"] =  2;
+                    trapper["soul"] = 0;
+                //JUDGE
+                const judge = [];
+                    judge["name"] = "Judge";
+                    judge["health"] = 110;
+                    judge["mana"] =  10;
+                    judge["attack"] = 4;
+                    judge["defense"] = 2;
+                    judge["agility"] = 1;
+                    judge["luck"] =  3;
+                    judge["soul"] = 3;
+                //ASSASSIN
+                const assassin = [];
+                    assassin["name"] = "Assassin";
+                    assassin["health"] = 60;
+                    assassin["mana"] =  0;
+                    assassin["attack"] = 3;
+                    assassin["defense"] = 1;
+                    assassin["agility"] = 8;
+                    assassin["luck"] =  3;
+                    assassin["soul"] = 0;
+                //RANGER
+                const ranger = [];
+                    ranger["name"] = "Ranger";
+                    ranger["health"] = 70;
+                    ranger["mana"] =  0;
+                    ranger["attack"] = 5;
+                    ranger["defense"] = 0;
+                    ranger["agility"] = 5;
+                    ranger["luck"] =  2;
+                    ranger["soul"] = 0;                
+                //CLERIC
+                const cleric = [];
+                    cleric["name"] = "Cleric";
+                    cleric["health"] = 70;
+                    cleric["mana"] =  30;
+                    cleric["attack"] = 2;
+                    cleric["defense"] = 1;
+                    cleric["agility"] = 1;
+                    cleric["luck"] =  4;
+                    cleric["soul"] = 10;
+                //REAPER
+                const reaper = [];
+                    reaper["name"] = "Reaper";
+                    reaper["health"] = 40;
+                    reaper["mana"] =  50;
+                    reaper["attack"] = 12;
+                    reaper["defense"] = 1;
+                    reaper["agility"] = 1;
+                    reaper["luck"] =  0;
+                    reaper["soul"] = 5;
+                //WIZARD
+                const wizard = [];
+                    wizard["name"] = "Wizard";
+                    wizard["health"] = 80;
+                    wizard["mana"] =  50;
+                    wizard["attack"] = 6;
+                    wizard["defense"] = 0;
+                    wizard["agility"] = 1;
+                    wizard["luck"] =  0;
+                    wizard["soul"] = 5;
+                //BRAWLER
+                const brawler = [];
+                    brawler["name"] = "Brawler";
+                    brawler["health"] = 90;
+                    brawler["mana"] =  0;
+                    brawler["attack"] = 5;
+                    brawler["defense"] = 4;
+                    brawler["agility"] = 3;
+                    brawler["luck"] =  2;
+                    brawler["soul"] = 0;
+                //VANGUARD
+                const vanguard = [];
+                    vanguard["name"] = "Vanguard";
+                    vanguard["health"] = 100;
+                    vanguard["mana"] =  0;
+                    vanguard["attack"] = 1;
+                    vanguard["defense"] = 8;
+                    vanguard["agility"] = 1;
+                    vanguard["luck"] =  0;
+                    vanguard["soul"] = 0;
+
+        /*FACTIONS*/
+                //FIRE
+                const fire = [];
+                    fire["name"] = "Fire";
+                    fire["color"] = "red";
+                    fire["health_bonus"] = 0;
+                    fire["mana_bonus"] = 1;
+                    fire["attack_bonus"] = 1;
+                    fire["defense_bonus"] = 2;
+                    fire["agility_bonus"] = -1;
+                    fire["luck_bonus"] = 0;
+                    fire["soul_bonus"] = 0;
+                //ICE
+                const ice = [];
+                    ice["name"] = "Ice";
+                    ice["color"] = "lightblue";
+                    ice["health_bonus"] = 5;
+                    ice["mana_bonus"] = -1;
+                    ice["attack_bonus"] = -1;
+                    ice["defense_bonus"] = 4;
+                    ice["agility_bonus"] = -1;
+                    ice["luck_bonus"] = 0;
+                    ice["soul_bonus"] = 1;
+                //NATURE
+                const nature = [];
+                    nature["name"] = "Nature";
+                    nature["color"] = "lightgreen";
+                    nature["health_bonus"] = 2;
+                    nature["mana_bonus"] = 5;
+                    nature["attack_bonus"] = 0;
+                    nature["defense_bonus"] = 0;
+                    nature["agility_bonus"] = 2;
+                    nature["luck_bonus"] = 1;
+                    nature["soul_bonus"] = 1;
+                //HOLY
+                const holy = [];
+                    holy["name"] = "Holy";
+                    holy["color"] = "gold";
+                    holy["health_bonus"] = 10;
+                    holy["mana_bonus"] = 5;
+                    holy["attack_bonus"] = -1;
+                    holy["defense_bonus"] = 2;
+                    holy["agility_bonus"] = 0;
+                    holy["luck_bonus"] = -1;
+                    holy["soul_bonus"] = 1;
+                //UNHOLY
+                const unholy = [];
+                    unholy["name"] = "Unholy";
+                    unholy["color"] = "purple";
+                    unholy["health_bonus"] = -10;
+                    unholy["mana_bonus"] = 20;
+                    unholy["attack_bonus"] = 5;
+                    unholy["defense_bonus"] = -5;
+                    unholy["agility_bonus"] = -2;
+                    unholy["luck_bonus"] = -1;
+                    unholy["soul_bonus"] = 5;
+        
+        //DEBUG
+        /*
+        const playerOne = [];
+        playerOne["faction"] = holy;
+        playerOne["class"] = cleric;
+        playerOne["weapon"] = 'var(--weapon-'+playerOne["faction"]["name"].toLowerCase()+'-'+playerOne["class"]["name"].toLowerCase()+')';
+        document.getElementById("player_one_icon").style.backgroundPosition = playerOne["weapon"];
+        */
+
+        var playerOne = [];
+        var playerTwo = [];
+
+        function output(outputString){
+            document.getElementById("match_data_content").innerHTML = document.getElementById("match_data_content").innerHTML + "<br />" + outputString;
+        }
+
+        function choose(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+        function setAbilities(player){
+            var factionChoice = choose(0, 1);
+            switch (eval(player)["faction"]){
+                case "Fire":
+                    if ( factionChoice == 0 ){
+                        eval(player)["factionSlot"] = "var(--ability-fireball)";
+                    }
+                    else{
+                        eval(player)["factionSlot"] = "var(--ability-flamethrower)";
+                    }
+                    break;
+                case "Ice":
+                    if ( factionChoice == 0 ){
+                        eval(player)["factionSlot"] = "var(--ability-hail)";
+                    }
+                    else{
+                        eval(player)["factionSlot"] = "var(--ability-freezeray)";
+                    }
+                    break;
+                case "Nature":
+                    if ( factionChoice == 0 ){
+                        eval(player)["factionSlot"] = "var(--ability-tornado)";
+                    }
+                    else{
+                        eval(player)["factionSlot"] = "var(--ability-vinelash)";
+                    }
+                    break;
+                case "Holy":
+                    if ( factionChoice == 0 ){
+                        eval(player)["factionSlot"] = "var(--ability-aura)";
+                    }
+                    else{
+                        eval(player)["factionSlot"] = "var(--ability-blessedground)";
+                    }
+                    break;
+                case "Unholy":
+                    if ( factionChoice == 0 ){
+                        eval(player)["factionSlot"] = "var(--ability-siphon)";
+                    }
+                    else{
+                        eval(player)["factionSlot"] = "var(--ability-shadowbolt)";
+                    }
+                    break;
+            }
+            var classChoice = choose(0, 1);
+            switch (eval(player)["class"]){
+                case "Knight":
+                    break;
+                case "Trapper":
+                    break;
+                case "Judge":
+                    break;
+                case "Assassin":
+                    break;
+                case "Ranger":
+                    break;
+                case "Cleric":
+                    break;
+                case "Reaper":
+                    break;
+                case "Wizard":
+                    break;
+                case "Brawler":
+                    break;
+                case "Vanguard":
+                    break;
+            }
+        }
+
+        function startGame(){
+            //BUILD
+            playerOne["name"] = document.getElementById("create_player_one_name").value;
+            playerOne["faction"] = eval(document.getElementById("create_player_one_faction").value.toLowerCase());
+            playerOne["class"] = eval(document.getElementById("create_player_one_class").value.toLowerCase());
+            playerOne["weapon"] = 'var(--weapon-'+playerOne["faction"]["name"].toLowerCase()+'-'+playerOne["class"]["name"].toLowerCase()+')';
+            playerTwo["name"] = document.getElementById("create_player_two_name").value;
+            playerTwo["faction"] = eval(document.getElementById("create_player_two_faction").value.toLowerCase());
+            playerTwo["class"] = eval(document.getElementById("create_player_two_class").value.toLowerCase());
+            playerTwo["weapon"] = 'var(--weapon-'+playerTwo["faction"]["name"].toLowerCase()+'-'+playerTwo["class"]["name"].toLowerCase()+')';
+            //ABILITIES
+            setAbilities("playerOne");
+            setAbilities("playerTwo");
+            //DISPLAY
+            document.getElementById("player_one_name").innerHTML = playerOne["name"] + ", "+playerOne["faction"]["name"]+" "+playerOne["class"]["name"];
+            document.getElementById("player_one_icon").style.backgroundPosition = playerOne["weapon"];
+            document.getElementById("player_one_icon").style.backgroundColor = "rgba(30, 30, 30, 1)";
+            document.getElementById("player_one_slot2").style.backgroundPosition = playerOne["factionSlot"];
+            document.getElementById("player_two_name").innerHTML = playerTwo["name"] + ", "+playerTwo["faction"]["name"]+" "+playerTwo["class"]["name"];
+            document.getElementById("player_two_icon").style.backgroundPosition = playerTwo["weapon"];
+            document.getElementById("player_two_icon").style.backgroundColor = "rgba(30, 30, 30, 1)";
+            document.getElementById("player_two_slot2").style.backgroundPosition = playerTwo["factionSlot"];
+            //HIDE MENU
+            document.getElementById("create_player_menu").style.display = "none";
+
+            output(playerOne["name"] + " has appeared!");
+            output(playerTwo["name"] + " has appeared!");
+        }
+
+    </script>
+</html>
