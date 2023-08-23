@@ -362,6 +362,28 @@
             #tooltip_desc{
                 width: 100%;
             }
+            #player_one_stats{
+                position: absolute;
+                top: 115px;
+                left: 15px;
+                width: 175px;
+                height: 20px;
+                font: 0.4em arial, sans;
+                text-align: center;
+            }
+            #player_two_stats{
+                position: absolute;
+                top: 115px;
+                right: 18px;
+                width: 175px;
+                height: 20px;
+                font: 0.4em arial, sans;
+                text-align: center;
+            }
+            .player_stat{
+                color: white;
+                display: inline-block;
+            }
         </style>
         <div id="logo-container">
             <img src="/rivals.png" alt="Rivals!" id="logo" />
@@ -390,6 +412,13 @@
                         <div class="player_slot" id="player_one_slot2"><!--PLAYER ONE SLOT TWO--></div>
                         <div class="player_slot_class" id="player_one_slot3"><!--PLAYER ONE SLOT THREE--></div>
                     </div>
+                    <div id="player_one_stats">
+                        [ <div class="player_stat" id="player_one_attack"><!--ATTACK P1--></div> ATK ] &nbsp;
+                        [ <div class="player_stat" id="player_one_defense"><!--DEFENSE P1--></div> DEF ] &nbsp;
+                        [ <div class="player_stat" id="player_one_agility"><!--AGILITY P1--></div> AGI ] &nbsp;
+                        [ <div class="player_stat" id="player_one_luck"><!--LUCK P1--></div> LUC ] &nbsp;
+                        [ <div class="player_stat" id="player_one_soul"><!--SOUL P1--></div> SOU ]
+                    </div>
                 </td>
                 <td id="match_data">
                     MATCH DATA <br /><br />
@@ -403,6 +432,13 @@
                         <div class="player_slot" id="player_two_slot1"><!--PLAYER TWO SLOT ONE--></div>
                         <div class="player_slot" id="player_two_slot2"><!--PLAYER TWO SLOT TWO--></div>
                         <div class="player_slot_class" id="player_two_slot3"><!--PLAYER TWO SLOT THREE--></div>
+                    </div>
+                    <div id="player_two_stats">
+                        [ <div class="player_stat" id="player_two_attack"><!--ATTACK P2--></div> ATK ] &nbsp;
+                        [ <div class="player_stat" id="player_two_defense"><!--DEFENSE P2--></div> DEF ] &nbsp;
+                        [ <div class="player_stat" id="player_two_agility"><!--AGILITY P2--></div> AGI ] &nbsp;
+                        [ <div class="player_stat" id="player_two_luck"><!--LUCK P2--></div> LUC ] &nbsp;
+                        [ <div class="player_stat" id="player_two_soul"><!--SOUL P2--></div> SOU ]
                     </div>
                 </td>
             </tr>
@@ -621,7 +657,7 @@
                 //NATURE
                 const nature = [];
                     nature["name"] = "Nature";
-                    nature["description"] = "Ardent defenders of Nature, 'The Twilight Enclave' seeks to preserve wildlife and vegetation.";
+                    nature["description"] = "Ardent defenders of Nature, 'The Enclave' seeks to preserve wildlife and vegetation.";
                     nature["color"] = "lightgreen";
                     nature["health_bonus"] = 2;
                     nature["move_bonus"] = 5;
@@ -782,44 +818,184 @@
             var classChoice = choose(0, 1);
             switch (eval(player)["class"]["name"]){
                 case "Knight":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-sword)";
+                        eval(player)["baseSlot"]["name"] = "Slash";
+                        eval(player)["baseSlot"]["description"] = "Slash with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -3;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:2";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-stab)";
+                        eval(player)["classSlot"]["name"] = "Execute";
+                        eval(player)["classSlot"]["description"] = "Attempt to execute your target";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -10;
+                        eval(player)["classSlot"]["move_effect"] = -5;
+                        eval(player)["classSlot"]["special_effect"] = "self:none:0";
                     break;
                 case "Trapper":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-axe)";
+                        eval(player)["baseSlot"]["name"] = "Chop";
+                        eval(player)["baseSlot"]["description"] = "Chop with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -3;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:2";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-trap)";
+                        eval(player)["classSlot"]["name"] = "Trap";
+                        eval(player)["classSlot"]["description"] = "Deploy a trap";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -2;
+                        eval(player)["classSlot"]["move_effect"] = 0;
+                        eval(player)["classSlot"]["special_effect"] = "self:move:3";
                     break;
                 case "Judge":
-                    eval(player)["baseSlot"]["data"] = "var(--ability-hammer)"; 
+                    //BASE SLOT
+                    eval(player)["baseSlot"]["data"] = "var(--ability-hammer)";
+                        eval(player)["baseSlot"]["name"] = "Smash";
+                        eval(player)["baseSlot"]["description"] = "Smash with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -6;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:1";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-respit)";
+                        eval(player)["classSlot"]["name"] = "Respit";
+                        eval(player)["classSlot"]["description"] = "Take a moment think - Slightly recovers HP in exchange for MP";
+                        eval(player)["classSlot"]["target"] = "self";
+                        eval(player)["classSlot"]["health_effect"] = 8;
+                        eval(player)["classSlot"]["move_effect"] = -10;
+                        eval(player)["classSlot"]["special_effect"] = "self:move:2";
                     break;
                 case "Assassin":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-dagger)";
+                        eval(player)["baseSlot"]["name"] = "Stab";
+                        eval(player)["baseSlot"]["description"] = "Stab with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -4;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:2";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-rend)";
+                        eval(player)["classSlot"]["name"] = "Dice";
+                        eval(player)["classSlot"]["description"] = "Slice your enemy in multiple places";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -12;
+                        eval(player)["classSlot"]["move_effect"] = -10;
+                        eval(player)["classSlot"]["special_effect"] = "self:none:0";
                     break;
                 case "Ranger":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-bow)";
+                        eval(player)["baseSlot"]["name"] = "Shoot";
+                        eval(player)["baseSlot"]["description"] = "Shoot a projectile from your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -3;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:1";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-eclipse)";
+                        eval(player)["classSlot"]["name"] = "Eclipse";
+                        eval(player)["classSlot"]["description"] = "Shoot a smoke filled projectile - Blinding enemies and lowering defense";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -2;
+                        eval(player)["classSlot"]["move_effect"] = -10;
+                        eval(player)["classSlot"]["special_effect"] = "other:defense:-4";
                     break;
                 case "Cleric":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-staff)";
+                        eval(player)["baseSlot"]["name"] = "Bash";
+                        eval(player)["baseSlot"]["description"] = "Bash an enemy with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -1;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:4";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-recover)";
+                        eval(player)["classSlot"]["name"] = "Life Tap";
+                        eval(player)["classSlot"]["description"] = "Sacrifice a portion of your HP in exchange for MP";
+                        eval(player)["classSlot"]["target"] = "self";
+                        eval(player)["classSlot"]["health_effect"] = -10;
+                        eval(player)["classSlot"]["move_effect"] = 8;
+                        eval(player)["classSlot"]["special_effect"] = "self:none:0";
                     break;
                 case "Reaper":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-staff)";
+                        eval(player)["baseSlot"]["name"] = "Bash";
+                        eval(player)["baseSlot"]["description"] = "Bash an enemy with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -1;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:4";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-banish)";
+                        eval(player)["classSlot"]["name"] = "Banish";
+                        eval(player)["classSlot"]["description"] = "Banish the soul of an enemy to the shadows";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -12;
+                        eval(player)["classSlot"]["move_effect"] = -12;
+                        eval(player)["classSlot"]["special_effect"] = "self:none:0";
                     break;
                 case "Wizard":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-staff)";
+                        eval(player)["baseSlot"]["name"] = "Bash";
+                        eval(player)["baseSlot"]["description"] = "Bash an enemy with your weapon";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -1;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:4";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-channel)";
+                        eval(player)["classSlot"]["name"] = "Channel";
+                        eval(player)["classSlot"]["description"] = "Channel your energy - Increases your attack power";
+                        eval(player)["classSlot"]["target"] = "self";
+                        eval(player)["classSlot"]["health_effect"] = 0;
+                        eval(player)["classSlot"]["move_effect"] = -5;
+                        eval(player)["classSlot"]["special_effect"] = "self:attack:3";
                     break;
                 case "Brawler":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-gauntlet)";
+                        eval(player)["baseSlot"]["name"] = "Punch";
+                        eval(player)["baseSlot"]["description"] = "Punch an enemy with your fists";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -1;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:2";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-stun)";
+                        eval(player)["classSlot"]["name"] = "Stun";
+                        eval(player)["classSlot"]["description"] = "Stuns your enemy with a brutal punch - Greatly lowers defense";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -1;
+                        eval(player)["classSlot"]["move_effect"] = -15;
+                        eval(player)["classSlot"]["special_effect"] = "other:defense:-8";
                     break;
                 case "Vanguard":
+                    //BASE SLOT
                     eval(player)["baseSlot"]["data"] = "var(--ability-shield)";
+                        eval(player)["baseSlot"]["name"] = "Slam";
+                        eval(player)["baseSlot"]["description"] = "Slam an enemy with your shield";
+                        eval(player)["baseSlot"]["target"] = "other";
+                        eval(player)["baseSlot"]["health_effect"] = -2;
+                        eval(player)["baseSlot"]["move_effect"] = 0;
+                        eval(player)["baseSlot"]["special_effect"] = "self:move:1";
+                    //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-reflect)";
+                        eval(player)["classSlot"]["name"] = "Reflect";
+                        eval(player)["classSlot"]["description"] = "Harness the power of an enemy hit and return if to them";
+                        eval(player)["classSlot"]["target"] = "other";
+                        eval(player)["classSlot"]["health_effect"] = -6;
+                        eval(player)["classSlot"]["move_effect"] = -6;
+                        eval(player)["classSlot"]["special_effect"] = "self:none:0";
                     break;
             }
         }
@@ -853,12 +1029,22 @@
                 document.getElementById("player_one_icon").style.backgroundColor = "rgba(30, 30, 30, 1)";
                     //SLOT 1
                     document.getElementById("player_one_slot1").style.backgroundPosition = playerOne["baseSlot"]["data"];
+                    document.getElementById("player_one_slot1").onmouseover = function() {showTooltip(event, playerOne["baseSlot"]["name"], playerOne["baseSlot"]["description"], playerOne["baseSlot"]["health_effect"], playerOne["baseSlot"]["move_effect"], playerOne["baseSlot"]["special_effect"])};
+                    document.getElementById("player_one_slot1").onmouseleave = function() {hideTooltip()};
                     //SLOT 2
                     document.getElementById("player_one_slot2").style.backgroundPosition = playerOne["factionSlot"]["data"];
                     document.getElementById("player_one_slot2").onmouseover = function() {showTooltip(event, playerOne["factionSlot"]["name"], playerOne["factionSlot"]["description"], playerOne["factionSlot"]["health_effect"], playerOne["factionSlot"]["move_effect"], playerOne["factionSlot"]["special_effect"])};
                     document.getElementById("player_one_slot2").onmouseleave = function() {hideTooltip()};
                     //SLOT 3
                     document.getElementById("player_one_slot3").style.backgroundImage = playerOne["classSlot"]["data"];
+                    document.getElementById("player_one_slot3").onmouseover = function() {showTooltip(event, playerOne["classSlot"]["name"], playerOne["classSlot"]["description"], playerOne["classSlot"]["health_effect"], playerOne["classSlot"]["move_effect"], playerOne["classSlot"]["special_effect"])};
+                    document.getElementById("player_one_slot3").onmouseleave = function() {hideTooltip()};
+                    //STATS                    
+                    document.getElementById("player_one_attack").innerHTML = playerOne["faction"]["attack_bonus"] + playerOne["class"]["attack"];
+                    document.getElementById("player_one_defense").innerHTML = playerOne["faction"]["defense_bonus"] + playerOne["class"]["defense"];
+                    document.getElementById("player_one_agility").innerHTML = playerOne["faction"]["agility_bonus"] + playerOne["class"]["agility"];
+                    document.getElementById("player_one_luck").innerHTML = playerOne["faction"]["luck_bonus"] + playerOne["class"]["luck"];
+                    document.getElementById("player_one_soul").innerHTML = playerOne["faction"]["soul_bonus"] + playerOne["class"]["soul"];
                 //PLAYER TWO
                 document.getElementById("player_two_name").innerHTML = playerTwo["name"] + ", "+playerTwo["faction"]["name"]+" "+playerTwo["class"]["name"];
                 document.getElementById("player_two_health").innerHTML = playerTwo["faction"]["health_bonus"]+playerTwo["class"]["health"];
@@ -868,12 +1054,22 @@
                 document.getElementById("player_two_icon").style.backgroundColor = "rgba(30, 30, 30, 1)";
                     //SLOT 1
                     document.getElementById("player_two_slot1").style.backgroundPosition = playerTwo["baseSlot"]["data"];
+                    document.getElementById("player_two_slot1").onmouseover = function() {showTooltip(event, playerTwo["baseSlot"]["name"], playerTwo["baseSlot"]["description"], playerTwo["baseSlot"]["health_effect"], playerTwo["baseSlot"]["move_effect"], playerTwo["baseSlot"]["special_effect"])};
+                    document.getElementById("player_two_slot1").onmouseleave = function() {hideTooltip()};
                     //SLOT2
                     document.getElementById("player_two_slot2").style.backgroundPosition = playerTwo["factionSlot"]["data"];
                     document.getElementById("player_two_slot2").onmouseover = function() {showTooltip(event, playerTwo["factionSlot"]["name"], playerTwo["factionSlot"]["description"], playerTwo["factionSlot"]["health_effect"], playerTwo["factionSlot"]["move_effect"], playerTwo["factionSlot"]["special_effect"])};
                     document.getElementById("player_two_slot2").onmouseleave = function() {hideTooltip()};
                     //SLOT 3
                     document.getElementById("player_two_slot3").style.backgroundImage = playerTwo["classSlot"]["data"];
+                    document.getElementById("player_two_slot3").onmouseover = function() {showTooltip(event, playerTwo["classSlot"]["name"], playerTwo["classSlot"]["description"], playerTwo["classSlot"]["health_effect"], playerTwo["classSlot"]["move_effect"], playerTwo["classSlot"]["special_effect"])};
+                    document.getElementById("player_two_slot3").onmouseleave = function() {hideTooltip()};
+                    //STATS                    
+                    document.getElementById("player_two_attack").innerHTML = playerTwo["faction"]["attack_bonus"] + playerTwo["class"]["attack"];
+                    document.getElementById("player_two_defense").innerHTML = playerTwo["faction"]["defense_bonus"] + playerTwo["class"]["defense"];
+                    document.getElementById("player_two_agility").innerHTML = playerTwo["faction"]["agility_bonus"] + playerTwo["class"]["agility"];
+                    document.getElementById("player_two_luck").innerHTML = playerTwo["faction"]["luck_bonus"] + playerTwo["class"]["luck"];
+                    document.getElementById("player_two_soul").innerHTML = playerTwo["faction"]["soul_bonus"] + playerTwo["class"]["soul"];
             //HIDE MENU
             document.getElementById("create_player_menu").style.display = "none";
             //OUTPUT
