@@ -175,6 +175,10 @@
                 border: 1px solid gold;
                 width: 32px;
                 height: 32px;
+                cursor: pointer;
+            }
+            #player_one_icon:hover{
+                border-color: teal;
             }
             #player_two{
                 vertical-align: text-top;
@@ -208,6 +212,10 @@
                 border: 1px solid gold;
                 width: 32px;
                 height: 32px;
+                cursor: pointer;
+            }
+            #player_two_icon:hover{
+                border-color: teal;
             }
             #match_data{
                 width: 31vw;
@@ -247,7 +255,7 @@
                 text-align: center;
                 display: inline-block;
             }
-            #player_one_mana{
+            #player_one_move{
                 color: teal;
                 font-weight: bold;
                 text-align: center;
@@ -259,7 +267,7 @@
                 text-align: center;
                 display: inline-block;
             }
-            #player_two_mana{
+            #player_two_move{
                 color: teal;
                 font-weight: bold;
                 text-align: center;
@@ -283,6 +291,10 @@
                 background-size: 160px 384px;
                 background-position: 500px 500px;
                 background-repeat: no-repeat;
+                cursor: pointer;
+            }
+            .player_slot:hover{
+                border-color: teal;
             }
             .player_slot_class{
                 width: 32px;
@@ -295,6 +307,10 @@
                 background-size: 100% 100%;
                 background-position: center center;
                 background-repeat: no-repeat;
+                cursor: pointer;
+            }
+            .player_slot_class:hover{
+                border-color: teal;
             }
             #player_one_description{
                 position: absolute;
@@ -327,6 +343,25 @@
                 top: 2.5vh;
                 padding-top: 10px;
             }
+            #tooltip{
+                position: absolute;
+                padding: 5px;
+                background-color: rgba(50, 50, 50, 1);
+                color: white;
+                border: 1px solid white;
+                border-radius: 5px;
+                display: none;
+                font: 0.5em arial, sans;
+                max-width: 100px;
+            }
+            #tooltip_title{
+                width: 100%;
+                text-align: left;
+                font-weight: bold;
+            }
+            #tooltip_desc{
+                width: 100%;
+            }
         </style>
         <div id="logo-container">
             <img src="/rivals.png" alt="Rivals!" id="logo" />
@@ -334,13 +369,13 @@
         <table class="play_area_numbers">
             <tr>
                 <td class="player_numbers">
-                    <div id="player_one_health"><!--P1HP--></div> HP | <div id="player_one_mana"><!--P1MP--></div> MP
+                    <div id="player_one_health"><!--P1HP--></div> HP | <div id="player_one_move"><!--P1MP--></div> MP
                 </td>
                 <td class="midpoint">
                     <!--EMPTY-->
                 </td>
                 <td class="player_numbers">
-                    <div id="player_two_health"><!--P2HP--></div> HP | <div id="player_two_mana"><!--P2MP--></div> MP
+                    <div id="player_two_health"><!--P2HP--></div> HP | <div id="player_two_move"><!--P2MP--></div> MP
                 </td>
             </tr>
         </table>
@@ -430,12 +465,21 @@
             <br /><br />
             <button onClick="startGame()">START</button>
         </div>
+
+        <div id="tooltip">
+            <div id="tooltip_title">
+
+            </div>
+            <div id="tooltip_desc">
+
+            </div>
+        </div>
     </body>
 
     <script>
 
         /*DATA*/
-            // 0 = name, 1 = health, 2 = mana, 3 = attack, 4 = defense, 5 = agility, 6 = luck, 7 = soul
+            // 0 = name, 1 = health, 2 = move, 3 = attack, 4 = defense, 5 = agility, 6 = luck, 7 = soul
 
         /*CLASSES*/
                 //KNIGHT
@@ -443,7 +487,7 @@
                     knight["name"] = "Knight";
                     knight["description"] = "Fierce combatants, Knights are the champions of their cause.";
                     knight["health"] = 100;
-                    knight["mana"] =  0;
+                    knight["move"] =  0;
                     knight["attack"] = 6;
                     knight["defense"] = 3;
                     knight["agility"] = 3;
@@ -454,7 +498,7 @@
                     trapper["name"] = "Trapper";
                     trapper["description"] = "At home in nature, Trappers use cunning and traps to strike their enemies.";
                     trapper["health"] = 80;
-                    trapper["mana"] =  0;
+                    trapper["move"] =  0;
                     trapper["attack"] = 4;
                     trapper["defense"] = 5;
                     trapper["agility"] = 4;
@@ -465,7 +509,7 @@
                     judge["name"] = "Judge";
                     judge["description"] = "When the law of the land needs enforcing, a Judge handles business.";
                     judge["health"] = 110;
-                    judge["mana"] =  10;
+                    judge["move"] =  10;
                     judge["attack"] = 4;
                     judge["defense"] = 2;
                     judge["agility"] = 1;
@@ -476,7 +520,7 @@
                     assassin["name"] = "Assassin";
                     assassin["description"] = "Working in the shadows, Assassins rely on stealth and agility to eradicate targets.";
                     assassin["health"] = 60;
-                    assassin["mana"] =  0;
+                    assassin["move"] =  0;
                     assassin["attack"] = 3;
                     assassin["defense"] = 1;
                     assassin["agility"] = 8;
@@ -487,7 +531,7 @@
                     ranger["name"] = "Ranger";
                     ranger["description"] = "Natural born scouts, Rangers are deadly with a bow and stout survivalists.";
                     ranger["health"] = 70;
-                    ranger["mana"] =  0;
+                    ranger["move"] =  0;
                     ranger["attack"] = 5;
                     ranger["defense"] = 0;
                     ranger["agility"] = 5;
@@ -498,7 +542,7 @@
                     cleric["name"] = "Cleric";
                     cleric["description"] = "The face and voice of their chosen religion, Clerics use otherworldly power for both good and evil.";
                     cleric["health"] = 70;
-                    cleric["mana"] =  30;
+                    cleric["move"] =  30;
                     cleric["attack"] = 2;
                     cleric["defense"] = 1;
                     cleric["agility"] = 1;
@@ -509,7 +553,7 @@
                     reaper["name"] = "Reaper";
                     reaper["description"] = "Clerics who trade their souls for more power become Reapers.";
                     reaper["health"] = 40;
-                    reaper["mana"] =  50;
+                    reaper["move"] =  50;
                     reaper["attack"] = 12;
                     reaper["defense"] = 1;
                     reaper["agility"] = 1;
@@ -520,7 +564,7 @@
                     wizard["name"] = "Wizard";
                     wizard["description"] = "Using magic not backed by a diety, Wizards tap into the otherworldly plane.";
                     wizard["health"] = 80;
-                    wizard["mana"] =  50;
+                    wizard["move"] =  50;
                     wizard["attack"] = 6;
                     wizard["defense"] = 0;
                     wizard["agility"] = 1;
@@ -531,7 +575,7 @@
                     brawler["name"] = "Brawler";
                     brawler["description"] = "Who needs a weapon when you have your fists? Brawlers are often hired muscle.";
                     brawler["health"] = 90;
-                    brawler["mana"] =  0;
+                    brawler["move"] =  0;
                     brawler["attack"] = 5;
                     brawler["defense"] = 4;
                     brawler["agility"] = 3;
@@ -542,7 +586,7 @@
                     vanguard["name"] = "Vanguard";
                     vanguard["description"] = "Elite front-line soldiers, Vanguard form defensive shield walls and soak up hits.";
                     vanguard["health"] = 100;
-                    vanguard["mana"] =  0;
+                    vanguard["move"] =  0;
                     vanguard["attack"] = 1;
                     vanguard["defense"] = 8;
                     vanguard["agility"] = 1;
@@ -556,7 +600,7 @@
                     fire["description"] = "Followers of the 'Crimson Flame' use weapons and spells coarsing with hellfire energy.";
                     fire["color"] = "red";
                     fire["health_bonus"] = 0;
-                    fire["mana_bonus"] = 1;
+                    fire["move_bonus"] = 1;
                     fire["attack_bonus"] = 1;
                     fire["defense_bonus"] = 2;
                     fire["agility_bonus"] = -1;
@@ -568,7 +612,7 @@
                     ice["description"] = "The Northern Tribes hail from a frozen land. They use the cold as a weapon.";
                     ice["color"] = "lightblue";
                     ice["health_bonus"] = 5;
-                    ice["mana_bonus"] = -1;
+                    ice["move_bonus"] = -1;
                     ice["attack_bonus"] = -1;
                     ice["defense_bonus"] = 4;
                     ice["agility_bonus"] = -1;
@@ -580,7 +624,7 @@
                     nature["description"] = "Ardent defenders of Nature, 'The Twilight Enclave' seeks to preserve wildlife and vegetation.";
                     nature["color"] = "lightgreen";
                     nature["health_bonus"] = 2;
-                    nature["mana_bonus"] = 5;
+                    nature["move_bonus"] = 5;
                     nature["attack_bonus"] = 0;
                     nature["defense_bonus"] = 0;
                     nature["agility_bonus"] = 2;
@@ -592,7 +636,7 @@
                     holy["description"] = "Swelling with otherworldly power, the 'Golden Path' seeks to purify the world of corruption.";
                     holy["color"] = "gold";
                     holy["health_bonus"] = 10;
-                    holy["mana_bonus"] = 5;
+                    holy["move_bonus"] = 5;
                     holy["attack_bonus"] = -1;
                     holy["defense_bonus"] = 2;
                     holy["agility_bonus"] = 0;
@@ -604,7 +648,7 @@
                     unholy["description"] = "Founded by former 'Golden Path' members, the 'Covenant' rejects all that is good in exchange for personal power.";
                     unholy["color"] = "purple";
                     unholy["health_bonus"] = -10;
-                    unholy["mana_bonus"] = 20;
+                    unholy["move_bonus"] = 20;
                     unholy["attack_bonus"] = 5;
                     unholy["defense_bonus"] = -5;
                     unholy["agility_bonus"] = -2;
@@ -636,86 +680,146 @@
             switch (eval(player)["faction"]["name"]){
                 case "Fire":
                     if ( factionChoice == 0 ){
-                        eval(player)["factionSlot"] = "var(--ability-fireball)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-fireball)";
+                        eval(player)["factionSlot"]["name"] = "Fireball";
+                        eval(player)["factionSlot"]["description"] = "A fiery projectile that scorches";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -10;
+                        eval(player)["factionSlot"]["move_effect"] = -5;
+                        eval(player)["factionSlot"]["special_effect"] = "other:none";
                     }
                     else{
-                        eval(player)["factionSlot"] = "var(--ability-flamethrower)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-flamethrower)";
+                        eval(player)["factionSlot"]["name"] = "Flamethrower";
+                        eval(player)["factionSlot"]["description"] = "A constant stream of fire";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -12;
+                        eval(player)["factionSlot"]["move_effect"] = -6;
+                        eval(player)["factionSlot"]["special_effect"] = "other:none:0";
                     }
                     break;
                 case "Ice":
                     if ( factionChoice == 0 ){
-                        eval(player)["factionSlot"] = "var(--ability-hail)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-hail)";
+                        eval(player)["factionSlot"]["name"] = "Hail";
+                        eval(player)["factionSlot"]["description"] = "A destructive hailstorm - Hurts everyone nearby!";
+                        eval(player)["factionSlot"]["target"] = "both";
+                        eval(player)["factionSlot"]["health_effect"] = -5;
+                        eval(player)["factionSlot"]["move_effect"] = -4;
+                        eval(player)["factionSlot"]["special_effect"] = "both:defense:-1";
                     }
                     else{
-                        eval(player)["factionSlot"] = "var(--ability-freezeray)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-freezeray)";
+                        eval(player)["factionSlot"]["name"] = "Freeze Ray";
+                        eval(player)["factionSlot"]["description"] = "A constant stream of icy energy";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -4;
+                        eval(player)["factionSlot"]["move_effect"] = -2;
+                        eval(player)["factionSlot"]["special_effect"] = "other:agility:-1";
                     }
                     break;
                 case "Nature":
                     if ( factionChoice == 0 ){
-                        eval(player)["factionSlot"] = "var(--ability-tornado)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-tornado)";
+                        eval(player)["factionSlot"]["name"] = "Tornado";
+                        eval(player)["factionSlot"]["description"] = "A devestating whirlwind of raw power - Hurts everyone nearby!";
+                        eval(player)["factionSlot"]["target"] = "both";
+                        eval(player)["factionSlot"]["health_effect"] = -15;
+                        eval(player)["factionSlot"]["move_effect"] = -15;
+                        eval(player)["factionSlot"]["special_effect"] = "both:none:0";
                     }
                     else{
-                        eval(player)["factionSlot"] = "var(--ability-vinelash)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-vinelash)";
+                        eval(player)["factionSlot"]["name"] = "Vine Lash";
+                        eval(player)["factionSlot"]["description"] = "A quick hit with a sharpened vine";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -5;
+                        eval(player)["factionSlot"]["move_effect"] = -3;
+                        eval(player)["factionSlot"]["special_effect"] = "other:none:0";
                     }
                     break;
                 case "Holy":
                     if ( factionChoice == 0 ){
-                        eval(player)["factionSlot"] = "var(--ability-aura)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-aura)";
+                        eval(player)["factionSlot"]["name"] = "Aura";
+                        eval(player)["factionSlot"]["description"] = "A protective prayer that increases defense";
+                        eval(player)["factionSlot"]["target"] = "self";
+                        eval(player)["factionSlot"]["health_effect"] = 0;
+                        eval(player)["factionSlot"]["move_effect"] = -3;
+                        eval(player)["factionSlot"]["special_effect"] = "self:defense:3";
                     }
                     else{
-                        eval(player)["factionSlot"] = "var(--ability-blessedground)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-blessedground)";
+                        eval(player)["factionSlot"]["name"] = "Blessed Ground";
+                        eval(player)["factionSlot"]["description"] = "Blesses the ground - Hurts and slows enemies";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -4;
+                        eval(player)["factionSlot"]["move_effect"] = -6;
+                        eval(player)["factionSlot"]["special_effect"] = "other:agility:-2";                        
                     }
                     break;
                 case "Unholy":
                     if ( factionChoice == 0 ){
-                        eval(player)["factionSlot"] = "var(--ability-siphon)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-siphon)";
+                        eval(player)["factionSlot"]["name"] = "Siphon";
+                        eval(player)["factionSlot"]["description"] = "Drain the very soul from an enemy - Slightly heals the caster";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -10;
+                        eval(player)["factionSlot"]["move_effect"] = -15;
+                        eval(player)["factionSlot"]["special_effect"] = "self:health:4";
                     }
                     else{
-                        eval(player)["factionSlot"] = "var(--ability-shadowbolt)";
+                        eval(player)["factionSlot"]["data"] = "var(--ability-shadowbolt)";
+                        eval(player)["factionSlot"]["name"] = "Shadowbolt";
+                        eval(player)["factionSlot"]["description"] = "A shadowy bolt of raw power";
+                        eval(player)["factionSlot"]["target"] = "other";
+                        eval(player)["factionSlot"]["health_effect"] = -5;
+                        eval(player)["factionSlot"]["move_effect"] = -10;
+                        eval(player)["factionSlot"]["special_effect"] = "other:none:0";
                     }
                     break;
             }
             var classChoice = choose(0, 1);
             switch (eval(player)["class"]["name"]){
                 case "Knight":
-                    eval(player)["baseSlot"] = "var(--ability-sword)";
-                    eval(player)["classSlot"] = "var(--ability-stab)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-sword)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-stab)";
                     break;
                 case "Trapper":
-                    eval(player)["baseSlot"] = "var(--ability-axe)";
-                    eval(player)["classSlot"] = "var(--ability-trap)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-axe)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-trap)";
                     break;
                 case "Judge":
-                    eval(player)["baseSlot"] = "var(--ability-hammer)"; 
-                    eval(player)["classSlot"] = "var(--ability-respit)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-hammer)"; 
+                    eval(player)["classSlot"]["data"] = "var(--ability-respit)";
                     break;
                 case "Assassin":
-                    eval(player)["baseSlot"] = "var(--ability-dagger)";
-                    eval(player)["classSlot"] = "var(--ability-rend)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-dagger)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-rend)";
                     break;
                 case "Ranger":
-                    eval(player)["baseSlot"] = "var(--ability-bow)";
-                    eval(player)["classSlot"] = "var(--ability-eclipse)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-bow)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-eclipse)";
                     break;
                 case "Cleric":
-                    eval(player)["baseSlot"] = "var(--ability-staff)";
-                    eval(player)["classSlot"] = "var(--ability-recover)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-staff)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-recover)";
                     break;
                 case "Reaper":
-                    eval(player)["baseSlot"] = "var(--ability-staff)";
-                    eval(player)["classSlot"] = "var(--ability-banish)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-staff)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-banish)";
                     break;
                 case "Wizard":
-                    eval(player)["baseSlot"] = "var(--ability-staff)";
-                    eval(player)["classSlot"] = "var(--ability-channel)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-staff)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-channel)";
                     break;
                 case "Brawler":
-                    eval(player)["baseSlot"] = "var(--ability-gauntlet)";
-                    eval(player)["classSlot"] = "var(--ability-stun)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-gauntlet)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-stun)";
                     break;
                 case "Vanguard":
-                    eval(player)["baseSlot"] = "var(--ability-shield)";
-                    eval(player)["classSlot"] = "var(--ability-reflect)";
+                    eval(player)["baseSlot"]["data"] = "var(--ability-shield)";
+                    eval(player)["classSlot"]["data"] = "var(--ability-reflect)";
                     break;
             }
         }
@@ -726,10 +830,16 @@
             playerOne["faction"] = eval(document.getElementById("create_player_one_faction").value.toLowerCase());
             playerOne["class"] = eval(document.getElementById("create_player_one_class").value.toLowerCase());
             playerOne["weapon"] = 'var(--weapon-'+playerOne["faction"]["name"].toLowerCase()+'-'+playerOne["class"]["name"].toLowerCase()+')';
+            playerOne["baseSlot"] = [];
+            playerOne["factionSlot"] = [];
+            playerOne["classSlot"] = [];
             playerTwo["name"] = document.getElementById("create_player_two_name").value;
             playerTwo["faction"] = eval(document.getElementById("create_player_two_faction").value.toLowerCase());
             playerTwo["class"] = eval(document.getElementById("create_player_two_class").value.toLowerCase());
             playerTwo["weapon"] = 'var(--weapon-'+playerTwo["faction"]["name"].toLowerCase()+'-'+playerTwo["class"]["name"].toLowerCase()+')';
+            playerTwo["baseSlot"] = [];
+            playerTwo["factionSlot"] = [];
+            playerTwo["classSlot"] = [];
             //ABILITIES
             setAbilities("playerOne");
             setAbilities("playerTwo");
@@ -737,28 +847,53 @@
                 //PLAYER ONE
                 document.getElementById("player_one_name").innerHTML = playerOne["name"] + ", "+playerOne["faction"]["name"]+" "+playerOne["class"]["name"];
                 document.getElementById("player_one_health").innerHTML = playerOne["faction"]["health_bonus"]+playerOne["class"]["health"];
-                document.getElementById("player_one_mana").innerHTML = playerOne["faction"]["mana_bonus"]+playerOne["class"]["mana"];
+                document.getElementById("player_one_move").innerHTML = playerOne["faction"]["move_bonus"]+playerOne["class"]["move"];
                 document.getElementById("player_one_description").innerHTML = playerOne["faction"]["description"]+" "+playerOne["class"]["description"];
                 document.getElementById("player_one_icon").style.backgroundPosition = playerOne["weapon"];
                 document.getElementById("player_one_icon").style.backgroundColor = "rgba(30, 30, 30, 1)";
-                document.getElementById("player_one_slot1").style.backgroundPosition = playerOne["baseSlot"];
-                document.getElementById("player_one_slot2").style.backgroundPosition = playerOne["factionSlot"];
-                document.getElementById("player_one_slot3").style.backgroundImage = playerOne["classSlot"];
+                    //SLOT 1
+                    document.getElementById("player_one_slot1").style.backgroundPosition = playerOne["baseSlot"]["data"];
+                    //SLOT 2
+                    document.getElementById("player_one_slot2").style.backgroundPosition = playerOne["factionSlot"]["data"];
+                    document.getElementById("player_one_slot2").onmouseover = function() {showTooltip(event, playerOne["factionSlot"]["name"], playerOne["factionSlot"]["description"], playerOne["factionSlot"]["health_effect"], playerOne["factionSlot"]["move_effect"], playerOne["factionSlot"]["special_effect"])};
+                    document.getElementById("player_one_slot2").onmouseleave = function() {hideTooltip()};
+                    //SLOT 3
+                    document.getElementById("player_one_slot3").style.backgroundImage = playerOne["classSlot"]["data"];
                 //PLAYER TWO
                 document.getElementById("player_two_name").innerHTML = playerTwo["name"] + ", "+playerTwo["faction"]["name"]+" "+playerTwo["class"]["name"];
                 document.getElementById("player_two_health").innerHTML = playerTwo["faction"]["health_bonus"]+playerTwo["class"]["health"];
-                document.getElementById("player_two_mana").innerHTML = playerTwo["faction"]["mana_bonus"]+playerTwo["class"]["mana"];
+                document.getElementById("player_two_move").innerHTML = playerTwo["faction"]["move_bonus"]+playerTwo["class"]["move"];
                 document.getElementById("player_two_description").innerHTML = playerTwo["faction"]["description"]+" "+playerTwo["class"]["description"];
                 document.getElementById("player_two_icon").style.backgroundPosition = playerTwo["weapon"];
                 document.getElementById("player_two_icon").style.backgroundColor = "rgba(30, 30, 30, 1)";
-                document.getElementById("player_two_slot1").style.backgroundPosition = playerTwo["baseSlot"];
-                document.getElementById("player_two_slot2").style.backgroundPosition = playerTwo["factionSlot"];
-                document.getElementById("player_two_slot3").style.backgroundImage = playerTwo["classSlot"];
+                    //SLOT 1
+                    document.getElementById("player_two_slot1").style.backgroundPosition = playerTwo["baseSlot"]["data"];
+                    //SLOT2
+                    document.getElementById("player_two_slot2").style.backgroundPosition = playerTwo["factionSlot"]["data"];
+                    document.getElementById("player_two_slot2").onmouseover = function() {showTooltip(event, playerTwo["factionSlot"]["name"], playerTwo["factionSlot"]["description"], playerTwo["factionSlot"]["health_effect"], playerTwo["factionSlot"]["move_effect"], playerTwo["factionSlot"]["special_effect"])};
+                    document.getElementById("player_two_slot2").onmouseleave = function() {hideTooltip()};
+                    //SLOT 3
+                    document.getElementById("player_two_slot3").style.backgroundImage = playerTwo["classSlot"]["data"];
             //HIDE MENU
             document.getElementById("create_player_menu").style.display = "none";
             //OUTPUT
             output(playerOne["name"] + " has appeared!");
             output(playerTwo["name"] + " has appeared!");
+        }
+
+        function showTooltip(event, name, desc, health, move, special){
+            var tooltip = document.getElementById("tooltip");
+            var tooltiptitle = document.getElementById("tooltip_title");
+            var tooltipdesc = document.getElementById("tooltip_desc");
+            tooltiptitle.innerHTML = name+" &nbsp; | &nbsp; "+move+" MP<br /><br />";
+            tooltipdesc.innerHTML = desc+"<br /><br /> Effects<br />"+health+" HP "+special;
+            tooltip.style.left = event.clientX + "px";
+            tooltip.style.top = event.clientY + "px";
+            tooltip.style.display = "block";
+        }
+
+        function hideTooltip(){
+            tooltip.style.display = "none";
         }
 
     </script>
