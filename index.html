@@ -1137,26 +1137,37 @@
             var specialTarget = specialData[0];
             var specialStat = specialData[1];
             var specialValue = specialData[2];
+            //STORED DATA
+            var totalChange = 0;
+            var totalChangeLabel = "";
             //CORE MATH
                 //TARGET - OTHER
                 if ( target == "other" ){
                     if ( playerid == 1 ){
-                        playerTwo["totalHealth"] = parseFloat(playerTwo["totalHealth"]) + parseFloat(health);
+                        totalChange = ((parseFloat(health) + parseFloat(playerTwo["totalDefense"]) - parseFloat(playerOne["totalAttack"])));
+                        totalChangeLabel = "of damage";
+                        playerTwo["totalHealth"] = parseFloat(playerTwo["totalHealth"]) + totalChange;
                         playerOne["totalMove"] = parseFloat(playerOne["totalMove"]) + parseFloat(move);
                     }
                     else{
-                        playerOne["totalHealth"] = parseFloat(playerOne["totalHealth"]) + parseFloat(health);
+                        totalChange = ((parseFloat(health) + parseFloat(playerOne["totalDefense"]) - parseFloat(playerTwo["totalAttack"])));
+                        totalChangeLabel = "of damage";
+                        playerOne["totalHealth"] = parseFloat(playerOne["totalHealth"]) + totalChange;
                         playerTwo["totalMove"] = parseFloat(playerTwo["totalMove"]) + parseFloat(move);
                     }
                 }
                 //TARGET - SELF
                 if ( target == "self" ){
                     if ( playerid == 1 ){
-                        playerOne["totalHealth"] = parseFloat(playerOne["totalHealth"]) + parseFloat(health);
+                        totalChange = parseFloat(playerOne["totalHealth"]) + parseFloat(health);
+                        totalChangeLabel = "of healing";
+                        playerOne["totalHealth"] = totalChange;
                         playerOne["totalMove"] = parseFloat(playerOne["totalMove"]) + parseFloat(move);
                     }
                     else{
-                        playerTwo["totalHealth"] = parseFloat(playerTwo["totalHealth"]) + parseFloat(health);
+                        totalChange = parseFloat(playerTwo["totalHealth"]) + parseFloat(health);
+                        totalChangeLabel = "of healing";
+                        playerTwo["totalHealth"] = totalChange;
                         playerTwo["totalMove"] = parseFloat(playerTwo["totalMove"]) + parseFloat(move);
                     }
                 }
@@ -1241,7 +1252,7 @@
                 document.getElementById("player_two_soul").innerHTML = playerTwo["totalSoul"];
 
             //OUTPUT
-            output(playername + " used " + ability + "!");
+            output(playername + "'s " + ability + " did " + totalChange + " points " + totalChangeLabel);
 
             //CHECK FOR WINNERS
             checkWinner();
