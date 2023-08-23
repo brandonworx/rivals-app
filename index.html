@@ -167,7 +167,7 @@
             #player_one_icon{
                 position: relative;
                 left: 44px;
-                top: 5%;
+                top: 3px;
                 background-image: url('/weapons.png');
                 background-size: 320px 160px;
                 background-position: 500px 500px;
@@ -204,7 +204,7 @@
             #player_two_icon{
                 position: relative;
                 left: 47px;
-                top: 5%;
+                top: 3px;
                 background-image: url('/weapons.png');
                 background-size: 320px 160px;
                 background-position: 500px 500px;
@@ -229,8 +229,8 @@
             }
             #match_data_content{
                 width: 100%; 
-                height: 70%;
-                max-height: 70%;
+                height: 130px;
+                max-height: 130px;
                 font: 0.75em arial, sans;
                 overflow-y: scroll;
             }
@@ -364,7 +364,7 @@
             }
             #player_one_stats{
                 position: absolute;
-                top: 115px;
+                top: 120px;
                 left: 15px;
                 width: 175px;
                 height: 20px;
@@ -373,7 +373,7 @@
             }
             #player_two_stats{
                 position: absolute;
-                top: 115px;
+                top: 120px;
                 right: 18px;
                 width: 175px;
                 height: 20px;
@@ -383,6 +383,9 @@
             .player_stat{
                 color: white;
                 display: inline-block;
+            }
+            .vspacer{
+                height: 5px;
             }
         </style>
         <div id="logo-container">
@@ -405,6 +408,7 @@
             <tr>
                 <td id="player_one">
                     <div id="player_one_name">PLAYER ONE<!--PLAYER ONE NAME--></div>
+                    <div class="vspacer"><!--VSPACER--></div>
                     <div id="player_one_icon"><!--PLAYER ONE FACTION / CLASS ICON--></div>
                     <p id="player_one_description"><!--PLAYER ONE DESCRIPTION--></p>
                     <div class="player_abilities">
@@ -426,6 +430,7 @@
                 </td>
                 <td id="player_two">
                     <div id="player_two_name">PLAYER TWO<!--PLAYER TWO NAME--></div>
+                    <div class="vspacer"><!--VSPACER--></div>
                     <div id="player_two_icon"><!--PLAYER TWO FACTION / CLASS ICON--></div>
                     <p id="player_two_description"><!--PLAYER TWO DESCRIPTION--></p>
                     <div class="player_abilities">
@@ -704,7 +709,7 @@
         var playerTwo = [];
 
         function output(outputString){
-            document.getElementById("match_data_content").innerHTML = document.getElementById("match_data_content").innerHTML + "<br />" + outputString;
+            document.getElementById("match_data_content").innerHTML = outputString + "<br />" + document.getElementById("match_data_content").innerHTML;
         }
 
         function choose(min, max) {
@@ -722,7 +727,7 @@
                         eval(player)["factionSlot"]["target"] = "other";
                         eval(player)["factionSlot"]["health_effect"] = -10;
                         eval(player)["factionSlot"]["move_effect"] = -5;
-                        eval(player)["factionSlot"]["special_effect"] = "other:none";
+                        eval(player)["factionSlot"]["special_effect"] = "other:none:0";
                     }
                     else{
                         eval(player)["factionSlot"]["data"] = "var(--ability-flamethrower)";
@@ -991,7 +996,7 @@
                     //CLASS SLOT
                     eval(player)["classSlot"]["data"] = "var(--ability-reflect)";
                         eval(player)["classSlot"]["name"] = "Reflect";
-                        eval(player)["classSlot"]["description"] = "Harness the power of an enemy hit and return if to them";
+                        eval(player)["classSlot"]["description"] = "Harness the power of an enemy hit and return it to them";
                         eval(player)["classSlot"]["target"] = "other";
                         eval(player)["classSlot"]["health_effect"] = -6;
                         eval(player)["classSlot"]["move_effect"] = -6;
@@ -1031,14 +1036,17 @@
                     document.getElementById("player_one_slot1").style.backgroundPosition = playerOne["baseSlot"]["data"];
                     document.getElementById("player_one_slot1").onmouseover = function() {showTooltip(event, playerOne["baseSlot"]["name"], playerOne["baseSlot"]["description"], playerOne["baseSlot"]["health_effect"], playerOne["baseSlot"]["move_effect"], playerOne["baseSlot"]["special_effect"])};
                     document.getElementById("player_one_slot1").onmouseleave = function() {hideTooltip()};
+                    document.getElementById("player_one_slot1").onclick = function() {useAbility(1, playerOne["name"], playerOne["baseSlot"]["name"], playerOne["baseSlot"]["target"], playerOne["baseSlot"]["health_effect"], playerOne["baseSlot"]["move_effect"], playerOne["baseSlot"]["special_effect"])};
                     //SLOT 2
                     document.getElementById("player_one_slot2").style.backgroundPosition = playerOne["factionSlot"]["data"];
                     document.getElementById("player_one_slot2").onmouseover = function() {showTooltip(event, playerOne["factionSlot"]["name"], playerOne["factionSlot"]["description"], playerOne["factionSlot"]["health_effect"], playerOne["factionSlot"]["move_effect"], playerOne["factionSlot"]["special_effect"])};
                     document.getElementById("player_one_slot2").onmouseleave = function() {hideTooltip()};
+                    document.getElementById("player_one_slot2").onclick = function() {useAbility(1, playerOne["name"], playerOne["factionSlot"]["name"], playerOne["factionSlot"]["target"], playerOne["classSlot"]["health_effect"], playerOne["classSlot"]["move_effect"], playerOne["classSlot"]["special_effect"])};
                     //SLOT 3
                     document.getElementById("player_one_slot3").style.backgroundImage = playerOne["classSlot"]["data"];
                     document.getElementById("player_one_slot3").onmouseover = function() {showTooltip(event, playerOne["classSlot"]["name"], playerOne["classSlot"]["description"], playerOne["classSlot"]["health_effect"], playerOne["classSlot"]["move_effect"], playerOne["classSlot"]["special_effect"])};
                     document.getElementById("player_one_slot3").onmouseleave = function() {hideTooltip()};
+                    document.getElementById("player_one_slot3").onclick = function() {useAbility(1, playerOne["name"], playerOne["classSlot"]["name"], playerOne["classSlot"]["target"], playerOne["classSlot"]["health_effect"], playerOne["classSlot"]["move_effect"], playerOne["classSlot"]["special_effect"])};
                     //STATS                    
                     document.getElementById("player_one_attack").innerHTML = playerOne["faction"]["attack_bonus"] + playerOne["class"]["attack"];
                     document.getElementById("player_one_defense").innerHTML = playerOne["faction"]["defense_bonus"] + playerOne["class"]["defense"];
@@ -1056,20 +1064,40 @@
                     document.getElementById("player_two_slot1").style.backgroundPosition = playerTwo["baseSlot"]["data"];
                     document.getElementById("player_two_slot1").onmouseover = function() {showTooltip(event, playerTwo["baseSlot"]["name"], playerTwo["baseSlot"]["description"], playerTwo["baseSlot"]["health_effect"], playerTwo["baseSlot"]["move_effect"], playerTwo["baseSlot"]["special_effect"])};
                     document.getElementById("player_two_slot1").onmouseleave = function() {hideTooltip()};
+                    document.getElementById("player_two_slot1").onclick = function() {useAbility(2, playerTwo["name"], playerTwo["baseSlot"]["name"], playerTwo["baseSlot"]["target"], playerTwo["baseSlot"]["health_effect"], playerTwo["baseSlot"]["move_effect"], playerTwo["baseSlot"]["special_effect"])};
                     //SLOT2
                     document.getElementById("player_two_slot2").style.backgroundPosition = playerTwo["factionSlot"]["data"];
                     document.getElementById("player_two_slot2").onmouseover = function() {showTooltip(event, playerTwo["factionSlot"]["name"], playerTwo["factionSlot"]["description"], playerTwo["factionSlot"]["health_effect"], playerTwo["factionSlot"]["move_effect"], playerTwo["factionSlot"]["special_effect"])};
                     document.getElementById("player_two_slot2").onmouseleave = function() {hideTooltip()};
+                    document.getElementById("player_two_slot2").onclick = function() {useAbility(2, playerTwo["name"], playerTwo["factionSlot"]["name"], playerTwo["factionSlot"]["target"], playerTwo["factionSlot"]["health_effect"], playerTwo["factionSlot"]["move_effect"], playerTwo["factionSlot"]["special_effect"])};
                     //SLOT 3
                     document.getElementById("player_two_slot3").style.backgroundImage = playerTwo["classSlot"]["data"];
                     document.getElementById("player_two_slot3").onmouseover = function() {showTooltip(event, playerTwo["classSlot"]["name"], playerTwo["classSlot"]["description"], playerTwo["classSlot"]["health_effect"], playerTwo["classSlot"]["move_effect"], playerTwo["classSlot"]["special_effect"])};
                     document.getElementById("player_two_slot3").onmouseleave = function() {hideTooltip()};
+                    document.getElementById("player_two_slot3").onclick = function() {useAbility(2, playerTwo["name"], playerTwo["classSlot"]["name"], playerTwo["classSlot"]["target"], playerTwo["classSlot"]["health_effect"], playerTwo["classSlot"]["move_effect"], playerTwo["classSlot"]["special_effect"])};
                     //STATS                    
                     document.getElementById("player_two_attack").innerHTML = playerTwo["faction"]["attack_bonus"] + playerTwo["class"]["attack"];
                     document.getElementById("player_two_defense").innerHTML = playerTwo["faction"]["defense_bonus"] + playerTwo["class"]["defense"];
                     document.getElementById("player_two_agility").innerHTML = playerTwo["faction"]["agility_bonus"] + playerTwo["class"]["agility"];
                     document.getElementById("player_two_luck").innerHTML = playerTwo["faction"]["luck_bonus"] + playerTwo["class"]["luck"];
                     document.getElementById("player_two_soul").innerHTML = playerTwo["faction"]["soul_bonus"] + playerTwo["class"]["soul"];
+            //SAVE PLAYER STATS
+                //PLAYER ONE
+                playerOne["totalHealth"] = playerOne["faction"]["health_bonus"]+playerOne["class"]["health"];
+                playerOne["totalMove"] = playerOne["faction"]["move_bonus"]+playerOne["class"]["move"];
+                playerOne["totalAttack"] = playerOne["faction"]["attack_bonus"]+playerOne["class"]["attack"];
+                playerOne["totalDefense"] = playerOne["faction"]["defense_bonus"] + playerOne["class"]["defense"];
+                playerOne["totalAgility"] = playerOne["faction"]["agility_bonus"] + playerOne["class"]["agility"];
+                playerOne["totalLuck"] = playerOne["faction"]["luck_bonus"] + playerOne["class"]["luck"];
+                playerOne["totalSoul"] = playerOne["faction"]["soul_bonus"] + playerOne["class"]["soul"];
+                //PLAYER TWO
+                playerTwo["totalHealth"] = playerTwo["faction"]["health_bonus"]+playerTwo["class"]["health"];
+                playerTwo["totalMove"] = playerTwo["faction"]["move_bonus"]+playerTwo["class"]["move"];
+                playerTwo["totalAttack"] = playerTwo["faction"]["attack_bonus"]+playerTwo["class"]["attack"];
+                playerTwo["totalDefense"] = playerTwo["faction"]["defense_bonus"] + playerTwo["class"]["defense"];
+                playerTwo["totalAgility"] = playerTwo["faction"]["agility_bonus"] + playerTwo["class"]["agility"];
+                playerTwo["totalLuck"] = playerTwo["faction"]["luck_bonus"] + playerTwo["class"]["luck"];
+                playerTwo["totalSoul"] = playerTwo["faction"]["soul_bonus"] + playerTwo["class"]["soul"];
             //HIDE MENU
             document.getElementById("create_player_menu").style.display = "none";
             //OUTPUT
@@ -1090,6 +1118,133 @@
 
         function hideTooltip(){
             tooltip.style.display = "none";
+        }
+
+        function checkWinner(){
+            if ( playerOne["totalHealth"] <= 0 ){
+                document.getElementById("player_one").style.opacity = 0;
+                output(" ********* GAME OVER! - "+playerOne["name"]+" has been defeated!");
+            }
+            if ( playerTwo["totalHealth"] <= 0 ){
+                document.getElementById("player_two").style.opacity = 0;
+                output(" ********* GAME OVER! - "+playerTwo["name"]+" has been defeated!");
+            }
+        }
+
+        function useAbility(playerid, playername, ability, target, health, move, special){
+            //GET SPECIAL DATA
+            var specialData = special.split(":");
+            var specialTarget = specialData[0];
+            var specialStat = specialData[1];
+            var specialValue = specialData[2];
+            //CORE MATH
+                //TARGET - OTHER
+                if ( target == "other" ){
+                    if ( playerid == 1 ){
+                        playerTwo["totalHealth"] = parseFloat(playerTwo["totalHealth"]) + parseFloat(health);
+                        playerOne["totalMove"] = parseFloat(playerOne["totalMove"]) + parseFloat(move);
+                    }
+                    else{
+                        playerOne["totalHealth"] = parseFloat(playerOne["totalHealth"]) + parseFloat(health);
+                        playerTwo["totalMove"] = parseFloat(playerTwo["totalMove"]) + parseFloat(move);
+                    }
+                }
+                //TARGET - SELF
+                if ( target == "self" ){
+                    if ( playerid == 1 ){
+                        playerOne["totalHealth"] = parseFloat(playerOne["totalHealth"]) + parseFloat(health);
+                        playerOne["totalMove"] = parseFloat(playerOne["totalMove"]) + parseFloat(move);
+                    }
+                    else{
+                        playerTwo["totalHealth"] = parseFloat(playerTwo["totalHealth"]) + parseFloat(health);
+                        playerTwo["totalMove"] = parseFloat(playerTwo["totalMove"]) + parseFloat(move);
+                    }
+                }
+                //TARGET - BOTH
+                if ( target == "both" ){
+                    playerOne["totalHealth"] = parseFloat(playerOne["totalHealth"]) + parseFloat(health);
+                    playerTwo["totalHealth"] = parseFloat(playerTwo["totalHealth"]) + parseFloat(health);
+                    if ( playerid == 1 ){
+                        playerOne["totalMove"] = parseFloat(playerOne["totalMove"]) + parseFloat(move);
+                    }
+                    else{
+                        playerTwo["totalMove"] = parseFloat(playerTwo["totalMove"]) + parseFloat(move);
+                    }
+                }
+            //CALCULATE SPECIAL DATA
+                //SPECIAL STATS
+                switch ( specialStat ){
+                    case "health":
+                        specialStat = "totalHealth";
+                        break;
+                    case "move":
+                        specialStat = "totalMove";
+                        break;
+                    case "attack":
+                        specialStat = "totalAttack";
+                        break;
+                    case "defense":
+                        specialStat = "totalDefense";
+                        break;
+                    case "agility":
+                        specialStat = "totalAgility";
+                        break;
+                    case "luck":
+                        specialStat = "totalLuck";
+                        break;
+                    case "soul":
+                        specialStat = "totalSoul";
+                        break;
+                }
+                //CORE
+                switch (specialTarget){
+                    //TARGET - OTHER
+                    case "other":
+                        if ( playerid == 1 ){
+                            playerTwo[specialStat] = parseFloat(playerTwo[specialStat]) + parseFloat(specialValue);
+                        }
+                        else{
+                            playerOne[specialStat] = parseFloat(playerOne[specialStat]) + parseFloat(specialValue);
+                        }
+                        break;
+                    case "self":
+                        if ( playerid == 1 ){
+                            playerOne[specialStat] = parseFloat(playerOne[specialStat]) + parseFloat(specialValue);
+                        }
+                        else{
+                            playerTwo[specialStat] = parseFloat(playerTwo[specialStat]) + parseFloat(specialValue);
+                        }
+                        break;
+                    case "both":
+                        playerOne[specialStat] = parseFloat(playerOne[specialStat]) + parseFloat(specialValue);
+                        playerTwo[specialStat] = parseFloat(playerTwo[specialStat]) + parseFloat(specialValue);
+                        break;
+                    case "none":
+                        break;
+                }
+            //DISPLAY RESULTS
+                //PLAYER ONE
+                document.getElementById("player_one_health").innerHTML = playerOne["totalHealth"];
+                document.getElementById("player_one_move").innerHTML = playerOne["totalMove"];
+                document.getElementById("player_one_attack").innerHTML = playerOne["totalAttack"];
+                document.getElementById("player_one_defense").innerHTML = playerOne["totalDefense"];
+                document.getElementById("player_one_agility").innerHTML = playerOne["totalAgility"];
+                document.getElementById("player_one_luck").innerHTML = playerOne["totalLuck"];
+                document.getElementById("player_one_soul").innerHTML = playerOne["totalSoul"];
+                //PLAYER TWO
+                document.getElementById("player_two_health").innerHTML = playerTwo["totalHealth"];
+                document.getElementById("player_two_move").innerHTML = playerTwo["totalMove"];
+                document.getElementById("player_two_attack").innerHTML = playerTwo["totalAttack"];
+                document.getElementById("player_two_defense").innerHTML = playerTwo["totalDefense"];
+                document.getElementById("player_two_agility").innerHTML = playerTwo["totalAgility"];
+                document.getElementById("player_two_luck").innerHTML = playerTwo["totalLuck"];
+                document.getElementById("player_two_soul").innerHTML = playerTwo["totalSoul"];
+
+            //OUTPUT
+            output(playername + " used " + ability + "!");
+
+            //CHECK FOR WINNERS
+            checkWinner();
         }
 
     </script>
